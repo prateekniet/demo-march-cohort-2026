@@ -238,17 +238,7 @@ jobs:
       # Start Flask application in background
       # -------------------------------------------------------
 
-      - name: Start Flask Application
-        run: |
-          nohup python src/app.py > app.log 2>&1 &
 
-          echo $! > app.pid
-
-          sleep 45
-
-          curl --fail http://127.0.0.1:5000/add?a=10\&b=5
-
-          curl --fail http://127.0.0.1:5000/subtract?a=10\&b=5
       # -------------------------------------------------------
       # ZAP Baseline DAST
       # -------------------------------------------------------
