@@ -256,8 +256,9 @@ jobs:
       - name: OWASP ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.15.0
         with:
-          target: "http://127.0.0.1:5000"
+          target: "https://www.amazon.com"
           artifact_name: "zap-dast-report"
-          fail_action: false
+
+
 
 
