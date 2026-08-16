@@ -211,3 +211,53 @@ jobs:
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
           inputs: requirements.txt
+  # ==========================================================
+  # JOB 5 - START APPLICATION
+  # ==========================================================
+
+  dast-application:
+
+    name: Start Application for DAST
+
+    runs-on: ubuntu-latest
+
+    needs: package
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      # -------------------------------------------------------
+      # Start Flask application in background
+      # -------------------------------------------------------
+
+      - name: Start Flask Application
+        run: |
+          nohup python src/app.py > app.log 2>&1 &
+
+          echo $! > app.pid
+
+          sleep 5
+
+          curl --fail http://127.0.0.1:5000/add?a=10\&b=5
+
+          curl --fail http://127.0.0.1:5000/subtract?a=10\&b=5
+      # -------------------------------------------------------
+      # ZAP Baseline DAST
+      # -------------------------------------------------------
+
+      - name: OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: "http://127.0.0.1:5000"
+          artifact_name: "zap-dast-report"
+          fail_action: false
+
+
