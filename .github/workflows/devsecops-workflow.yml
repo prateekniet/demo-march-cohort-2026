@@ -244,7 +244,7 @@ jobs:
 
           echo $! > app.pid
 
-          sleep 5
+          sleep 45
 
           curl --fail http://127.0.0.1:5000/add?a=10\&b=5
 
